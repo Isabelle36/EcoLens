@@ -1,9 +1,10 @@
 import './App.css';
+import { Home } from './Components/Home b4 Login/Home';
 
 function App() {
   return (
     <div>
-     <h1> Hello Ecolens Team!! </h1>
+     <Home />
     </div>
   );
 }
