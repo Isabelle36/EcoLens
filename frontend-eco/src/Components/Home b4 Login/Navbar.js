@@ -1,8 +1,42 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { auth } from '../Firebase/Firebase';
+import { onAuthStateChanged } from 'firebase/auth'; 
 
 export const Navbar = () => {
-  let location = useLocation();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); 
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+   
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false); 
+    });
+
+    return () => unsubscribe(); 
+  }, []);
+
+  const handleLoginClick = () => {
+    navigate("/login"); 
+  };
+
+  const handleLogoutClick = () => {
+    auth.signOut(); 
+    setDropdownOpen(false); 
+  };
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen); 
+  };
+
+  const getInitials = (email) => {
+    return email ? email.charAt(0).toUpperCase() : '';
+  };
 
   return (
     <div>
@@ -56,7 +90,45 @@ export const Navbar = () => {
                 Contact
               </Link>
             </li>
-            <button className="rounded-lg btn loginBtn">Login</button>
+
+           
+            {loading ? (
+              <button className="rounded-lg btn loginBtn">Loading...</button> 
+            ) : user ? (
+              <div className="relative ml-5"> 
+                {user.photoURL ? (
+                  <img
+                    src={user.photoURL} 
+                    alt="Profile"
+                    className="w-14 h-14 rounded-full cursor-pointer"
+                    onClick={toggleDropdown} 
+                  />
+                ) : (
+                  <div
+                    className="w-14 h-14 flex items-center justify-center bg-gray-300 text-white rounded-full cursor-pointer"
+                    onClick={toggleDropdown} 
+                  >
+                    {getInitials(user.email)} 
+                  </div>
+                )}
+
+                {/* Dropdown menu */}
+                {dropdownOpen && (
+                  <div className="absolute left-0 mt-3 bg-white shadow-lg rounded-lg w-32 text-center">
+                    <button
+                      onClick={handleLogoutClick}
+                      className="w-32 py-2 text-black  hover:bg-red-700 rounded-lg  text-xl "
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button className="rounded-lg btn loginBtn" onClick={handleLoginClick}>
+                Login
+              </button>
+            )}
           </ul>
         </nav>
       </div>

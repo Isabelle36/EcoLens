@@ -4,16 +4,23 @@ import { Home } from "./Components/Home b4 Login/Home";
 import { About } from "./Components/About/About";
 import { Contact } from "./Components/Contact/contact";
 import { MyProfile } from "./Components/MyProfile/profile";
+import Login from "./Components/Login/Login";
+import SignUp from "./Components/SignUp/SignUp";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <Router>
       <div>
+      <ToastContainer />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/profile" element={<MyProfile  />} />
+          <Route path="/login" element={<Login  />} />
+          <Route path="/signup" element={<SignUp  />} />
         </Routes>
       </div>
     </Router>
