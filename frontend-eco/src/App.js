@@ -25,6 +25,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/profile" element={<MyProfile />} />
           <Route path="/login" element={<Login />} />
+         
           <Route path="/signup" element={<SignUp />} />
           <Route path="/home-after-login" element={<HomeAfterLogin />} />
           <Route path="/verify-product" element={<VerifyProd />} />

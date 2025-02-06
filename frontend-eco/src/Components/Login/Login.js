@@ -82,14 +82,14 @@ const Login = () => {
         </button>
 
         <p className="text-center text-gray-600">
-          Don't have an account?{" "}
-          <a href="/signup" className="text-blue-500 hover:underline">
-            Sign Up
-          </a>
-        </p>
-      </div>
-    </div>
-  );
+                    Don't have an account?{" "}
+                    <Link to="/signup" className="text-blue-500 hover:underline">
+                        Sign Up
+                    </Link>
+                </p>
+            </div>
+        </div>
+    );
 };
 
 export default Login;
