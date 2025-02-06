@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../Firebase/Firebase";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import "./SignUp.css";
+import { useNavigate,Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 
 const SignUp = () => {
@@ -93,9 +94,9 @@ const SignUp = () => {
 
                 <p className="text-center text-gray-600">
                     Already have an account?{" "}
-                    <a href="/login" className="text-blue-500 hover:underline">
+                    <Link to="/login" className="text-blue-500 hover:underline">
                         Log In
-                    </a>
+                    </Link>
                 </p>
             </div>
         </div>
