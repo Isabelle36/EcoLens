@@ -5,8 +5,9 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import { auth } from "../Firebase/Firebase";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import "./Login.css";
 import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
@@ -81,15 +82,17 @@ const Login = () => {
           Log In with Google
         </button>
 
-        <p className="text-center text-gray-600">
-          Don't have an account?{" "}
-          <a href="/signup" className="text-blue-500 hover:underline">
-            Sign Up
-          </a>
-        </p>
-      </div>
-    </div>
-  );
+
+                <p className="text-center text-gray-600">
+                    Don't have an account?{" "}
+                    <Link to="/signup" className="text-blue-500 hover:underline">
+                        Sign Up
+                    </Link>
+                </p>
+            </div>
+        </div>
+    );
+
 };
 
 export default Login;

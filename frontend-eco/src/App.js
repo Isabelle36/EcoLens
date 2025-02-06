@@ -8,11 +8,14 @@ import Login from "./Components/Login/Login";
 import SignUp from "./Components/SignUp/SignUp";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+import EnvironmentalInsights from "./Components/OpenWeather/EnvironmentalInsights";
 import { HomeAfterLogin } from "./Components/Home Aft Login/HomeAfterLogin";
 import Notif from "./Components/Home Aft Login/Notif";
 import AirQuality from "./Components/Home Aft Login/AirQuality";
 import VerifyProd from "./Components/Home Aft Login/VerifyProd";
 import ScanProd from "./Components/Home Aft Login/ScanProd";
+
 
 function App() {
   return (
@@ -23,6 +26,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+
+         
+          <Route path="/insights" element={<EnvironmentalInsights />} />
+         
           <Route path="/profile" element={<MyProfile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
@@ -31,6 +38,7 @@ function App() {
           <Route path="/scan-product" element={<ScanProd />} />
           <Route path="/notifications" element={<Notif />} />
           <Route path="/air-quality" element={<AirQuality />} />
+
         </Routes>
       </div>
     </Router>

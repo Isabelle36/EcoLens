@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import "./Home.css";
 import { Navbar } from "./Navbar";
 import EcoFriendlyCards from "./EcoFriendlyCards";
@@ -6,6 +6,13 @@ import CardContainer from "./WeCanHelpCard";
 import Footer from "./footer";
 
 export const Home = () => {
+  const targetRef = useRef(null);
+  const scrollToTarget = () => {
+    window.scrollTo({
+      top: targetRef.current.offsetTop,
+      behavior: "smooth",
+    });
+  };
   return (
     <div className="w-screen h-screen">
       <span className="rounded-full w-40 h-40 colo blur-2xl "></span>
@@ -18,8 +25,11 @@ export const Home = () => {
         eco-certification verification, and personalized health advice based on
         your location and lifestyle.
       </p>
-      <button className="text-9xl px-8 py-4 rounded-md Getstartedbtn text-white">
-        Get Started
+      <button
+        className="text-9xl px-8 py-4 rounded-md Getstartedbtn text-white"
+        onClick={scrollToTarget}
+      >
+        Learn More
       </button>
       <svg
         id="visual"
@@ -61,10 +71,12 @@ export const Home = () => {
           strokeLinejoin="miter"
         ></path>
       </svg>
-      <h1 className="text-8xl text-red-600 whatsec2 ">How we can help you ??</h1>
+      <h1 className="text-8xl text-red-600 whatsec2 " ref={targetRef}>
+        How we can help you ??
+      </h1>
       <div className="whatsection2">
-       <CardContainer/>
-    <Footer/>
+        <CardContainer />
+        <Footer />
       </div>
     </div>
   );
