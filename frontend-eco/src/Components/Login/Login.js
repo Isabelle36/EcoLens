@@ -5,8 +5,9 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import { auth } from "../Firebase/Firebase";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import "./Login.css";
 import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
@@ -24,12 +25,13 @@ const Login = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       toast.success("Login successful!");
+      navigate("/");
     } catch (error) {
       console.error(error.code, error.message);
       toast.success("Login successful");
     } finally {
       setIsLoading(false);
-      navigate("/home-after-login");
+      
     }
   };
 
@@ -81,7 +83,8 @@ const Login = () => {
           Log In with Google
         </button>
 
-        <p className="text-center text-gray-600">
+
+                <p className="text-center text-gray-600">
                     Don't have an account?{" "}
                     <Link to="/signup" className="text-blue-500 hover:underline">
                         Sign Up
@@ -90,6 +93,7 @@ const Login = () => {
             </div>
         </div>
     );
+
 };
 
 export default Login;

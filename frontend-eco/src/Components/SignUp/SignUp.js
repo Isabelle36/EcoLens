@@ -4,15 +4,17 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
-import { auth } from "../Firebase/Firebase";
+import { auth, setDisplayName } from "../Firebase/Firebase";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import "./SignUp.css";
+import { useNavigate, Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 
 const SignUp = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState(""); // Added state for name
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSignup = async (e) => {
@@ -20,6 +22,13 @@ const SignUp = () => {
 
     if (isLoading) return;
     setIsLoading(true);
+
+    // Validate name
+    if (!name.trim()) {
+      toast.error("Please enter your name.");
+      setIsLoading(false);
+      return;
+    }
 
     // Validate email
     if (!email.includes("@") || !email.includes(".")) {
@@ -36,8 +45,17 @@ const SignUp = () => {
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      toast.success("Signup successful!");
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      // const user = userCredential.user;
+
+      // Set the display name
+      await setDisplayName(name);
+      toast.success("Signup successful! Welcome, " + name);
+
       navigate("/");
     } catch (error) {
       console.error(error.code, error.message);
@@ -65,6 +83,13 @@ const SignUp = () => {
       <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-md rounded-lg">
         <h2 className="text-center text-2xl font-bold">Sign Up</h2>
         <form onSubmit={handleSignup} className="space-y-4">
+          <input
+            type="text"
+            placeholder="Full Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
           <input
             type="email"
             placeholder="Email"
@@ -97,9 +122,9 @@ const SignUp = () => {
 
         <p className="text-center text-gray-600">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-500 hover:underline">
+          <Link to="/login" className="text-blue-500 hover:underline">
             Log In
-          </a>
+          </Link>
         </p>
       </div>
     </div>
