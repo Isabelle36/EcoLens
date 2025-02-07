@@ -9,7 +9,7 @@ export const getAirQuality = async (lat, lon) => {
   return response.data;
 };
 
-export const getCurrentWeather = async (lat, lon) => {
+export const getWeather = async (lat, lon) => {
   const url = `${BASE_URL}/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
   const response = await axios.get(url);
   return response.data;

@@ -34,10 +34,15 @@ body{
     background-color: #3445314c;
     width: 87%;
     height: 4rem;
-    
+    left: 7%;
     position: absolute;
     top: 30px;
     border: 1px solid #fffdfd;
+}
+
+.airqua{
+    position: relative;
+    right: 51%;
 }
 
 .cen

@@ -25,12 +25,13 @@ const Login = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       toast.success("Login successful!");
+      navigate("/");
     } catch (error) {
       console.error(error.code, error.message);
       toast.success("Login successful");
     } finally {
       setIsLoading(false);
-      navigate("/home-after-login");
+      
     }
   };
 

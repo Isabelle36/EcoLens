@@ -1,18 +1,40 @@
-import React, { useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { onAuthStateChanged } from "firebase/auth"; 
+import { auth } from "../Firebase/Firebase";
 import "./Home.css";
 import { Navbar } from "./Navbar";
 import EcoFriendlyCards from "./EcoFriendlyCards";
 import CardContainer from "./WeCanHelpCard";
 import Footer from "./footer";
+import { HomeAfterLogin } from "../Home Aft Login/HomeAfterLogin";
 
 export const Home = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+
   const targetRef = useRef(null);
+
+  // Scroll function
   const scrollToTarget = () => {
     window.scrollTo({
       top: targetRef.current.offsetTop,
       behavior: "smooth",
     });
   };
+
+  
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsLoggedIn(!!user); 
+    });
+
+    return () => unsubscribe(); 
+  }, []);
+
+  
+  if (isLoggedIn) {
+    return <HomeAfterLogin />;
+  }
+
   return (
     <div className="w-screen h-screen">
       <span className="rounded-full w-40 h-40 colo blur-2xl "></span>
