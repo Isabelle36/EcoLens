@@ -65,25 +65,25 @@ export const HomeAfterLogin = () => {
     const levels = ["Good", "Fair", "Moderate", "Poor", "Very Poor"];
     return levels[aqi - 1] || "Unknown";
   };
-  const handleSmsSubscription = () => {
-    setIsSmsEnabled(true);
-  };
-  const handleClose = async () => {
-    if (isSmsEnabled) {
+  const handleSmsSubscription = async () => {
+    if (!isSmsEnabled) {
       try {
+        const { airMessage, weatherMessage } = generateAdvice(); // Get advice messages
+  
         await axios.post("http://localhost:5000/send-sms", {
-          message: `Air Quality Alert: ${getAqiLevel(
-            airQuality?.list[0]?.main?.aqi
-          )}. PM2.5: ${airQuality?.list[0]?.components?.pm2_5} μg/m³, PM10: ${
-            airQuality?.list[0]?.components?.pm10
-          } μg/m³`,
+          message: `🌍 Environmental Update 🌤️\n\n${airMessage}\n\n${weatherMessage}`,
         });
+  
         alert("SMS Sent Successfully!");
+        setIsSmsEnabled(true); // Prevent multiple sends
       } catch (error) {
         console.error("Error sending SMS:", error);
       }
     }
-    setIsModalOpen(false);
+  };
+  
+  const handleClose = () => {
+    setIsModalOpen(false); // Only closes the modal, no SMS sending
   };
 
   const generateAdvice = () => {
