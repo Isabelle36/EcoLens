@@ -90,26 +90,26 @@ export const Navbar = () => {
             </li>
             <li className="liwithouteco">
               <Link
-                to="/notifications"
+                to="/profile"
                 className={
-                  location.pathname === "/notifications"
+                  location.pathname === "/profile"
                     ? "text-white"
                     : "text-gray-500 hover:text-white"
                 }
               >
-                Notifications
+                My Profile
               </Link>
             </li>
             <li className="liwithouteco">
               <Link
-                to="/air-quality"
+                to="/contact"
                 className={
-                  location.pathname === "/air-quality"
+                  location.pathname === "/contact"
                     ? "text-white"
-                    : "text-gray-500 hover:text-white airqua"
+                    : "text-gray-500 hover:text-white"
                 }
               >
-                Air Quality
+                Contact
               </Link>
             </li>
             <li className="relative ml-5">
