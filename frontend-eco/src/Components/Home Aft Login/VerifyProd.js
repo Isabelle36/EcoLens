@@ -63,7 +63,15 @@ const VerifyProd = () => {
       }
   
       const result = await response.json();
-      setVerificationResult(result);
+  
+      // Check if the product is eco-friendly
+      const isEcoFriendly =
+        result.ecoScore && ["A", "B"].includes(result.ecoScore.toUpperCase());
+  
+      setVerificationResult({
+        ...result,
+        isEcoFriendly, // Add this field to the result object
+      });
     } catch (error) {
       console.error("Verification Error:", error.message);
       alert(`Verification Error: ${error.message}`);
@@ -71,6 +79,7 @@ const VerifyProd = () => {
       setLoading(false);
     }
   };
+  
   
   
 
@@ -182,18 +191,30 @@ const VerifyProd = () => {
 
 
       {/* Verification Result */}
-      {verificationResult && (
-        <div className="mt-6">
-          <h2 className="text-2xl font-semibold">Verification Result:</h2>
-          <div className="bg-gray-800 p-4 rounded-lg text-sm">
-            <p><strong>Product Name:</strong> {verificationResult.productName}</p>
-            <p><strong>Brand:</strong> {verificationResult.brands}</p>
-            <p><strong>Eco Score:</strong> {verificationResult.ecoScore}</p>
-            <p><strong>Labels:</strong> {verificationResult.labels}</p>
-            <p><strong>Packaging:</strong> {verificationResult.packaging}</p>
-          </div>
-        </div>
-      )}
+      {/* Verification Result */}
+{verificationResult && (
+  <div className="mt-6">
+    <h2 className="text-2xl font-semibold">Verification Result:</h2>
+    <div className="bg-gray-800 p-4 rounded-lg text-sm">
+      <p><strong>Product Name:</strong> {verificationResult.productName}</p>
+      <p><strong>Brand:</strong> {verificationResult.brand}</p>
+      <p><strong>Eco Score:</strong> {verificationResult.ecoScore}</p>
+      <p><strong>Labels:</strong> {verificationResult.labels}</p>
+      <p><strong>Packaging:</strong> {verificationResult.packaging}</p>
+      <p>
+        <strong>Eco-Friendly:</strong>{" "}
+        <span
+          className={`font-bold ${
+            verificationResult.isEcoFriendly ? "text-green-500" : "text-red-500"
+          }`}
+        >
+          {verificationResult.isEcoFriendly ? "Yes" : "No"}
+        </span>
+      </p>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };
