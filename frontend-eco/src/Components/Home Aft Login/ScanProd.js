@@ -1,7 +1,9 @@
-import React from "react";
+import React from 'react'
 
-const ScanProd = () => {
-  return <div style={{ color: "white" }}>Scan Product</div>;
-};
+ const ScanProd = () => {
+  return (
+    <div>ScanProd</div>
+  )
+}
 
 export default ScanProd;
