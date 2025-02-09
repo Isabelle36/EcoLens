@@ -35,22 +35,43 @@ const VerifyProd = () => {
   };
 
   const handleVerify = async () => {
-    if (!selectedProduct || !visitorId) return;
-
+    if (!visitorId) return;
+  
     setLoading(true);
     try {
+      const requestBody = {
+        visitorId,
+      };
+  
+      // Send barcode or productName based on the selected product
+      if (selectedProduct?.barcode) {
+        requestBody.barcode = selectedProduct.barcode;
+      } else if (selectedProduct?.productName) {
+        requestBody.productName = selectedProduct.productName;
+      } else {
+        throw new Error("No product selected for verification.");
+      }
+  
       const response = await fetch("http://localhost:5000/verify-product", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ visitorId, barcode: selectedProduct.barcode }),
+        body: JSON.stringify(requestBody),
       });
-
+  
       if (!response.ok) {
         throw new Error("Failed to verify the product.");
       }
-
+  
       const result = await response.json();
-      setVerificationResult(result.ecoDetails);
+  
+      // Check if the product is eco-friendly
+      const isEcoFriendly =
+        result.ecoScore && ["A", "B"].includes(result.ecoScore.toUpperCase());
+  
+      setVerificationResult({
+        ...result,
+        isEcoFriendly, // Add this field to the result object
+      });
     } catch (error) {
       console.error("Verification Error:", error.message);
       alert(`Verification Error: ${error.message}`);
@@ -58,6 +79,9 @@ const VerifyProd = () => {
       setLoading(false);
     }
   };
+  
+  
+  
 
   const handleQrUpload = async () => {
     if (!qrFile || !visitorId) return;
@@ -132,47 +156,65 @@ const VerifyProd = () => {
       </div>
 
       {/* Search Results */}
-      {searchResults.length > 0 && (
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold">Search Results:</h2>
-          <ul>
-            {searchResults.map((product, index) => (
-              <li
-                key={index}
-                className="cursor-pointer text-green-400 hover:text-green-500"
-                onClick={() => setSelectedProduct(product)}
-              >
-                {product.productName} - {product.brand}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {/* Verify Button */}
-      {selectedProduct && (
-        <button
-          onClick={handleVerify}
-          disabled={loading}
-          className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg"
+      {/* Search Results */}
+{searchResults.length > 0 && (
+  <div className="mb-6">
+    <h2 className="text-xl font-semibold">Search Results:</h2>
+    <ul>
+      {searchResults.map((product, index) => (
+        <li
+          key={index}
+          className={`cursor-pointer ${
+            selectedProduct?.barcode === product.barcode || selectedProduct?.productName === product.productName
+              ? "text-green-600"
+              : "text-green-400"
+          } hover:text-green-500`}
+          onClick={() => setSelectedProduct(product)}
         >
-          {loading ? "Verifying..." : "Verify Selected Product"}
-        </button>
-      )}
+          {product.productName} - {product.brand}
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
+{/* Verify Button */}
+{selectedProduct && (
+  <button
+    onClick={handleVerify}
+    disabled={loading}
+    className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg"
+  >
+    {loading ? "Verifying..." : "Verify Selected Product"}
+  </button>
+)}
+
 
       {/* Verification Result */}
-      {verificationResult && (
-        <div className="mt-6">
-          <h2 className="text-2xl font-semibold">Verification Result:</h2>
-          <div className="bg-gray-800 p-4 rounded-lg text-sm">
-            <p><strong>Product Name:</strong> {verificationResult.productName}</p>
-            <p><strong>Brand:</strong> {verificationResult.brands}</p>
-            <p><strong>Eco Score:</strong> {verificationResult.ecoScore}</p>
-            <p><strong>Labels:</strong> {verificationResult.labels}</p>
-            <p><strong>Packaging:</strong> {verificationResult.packaging}</p>
-          </div>
-        </div>
-      )}
+      {/* Verification Result */}
+{verificationResult && (
+  <div className="mt-6">
+    <h2 className="text-2xl font-semibold">Verification Result:</h2>
+    <div className="bg-gray-800 p-4 rounded-lg text-sm">
+      <p><strong>Product Name:</strong> {verificationResult.productName}</p>
+      <p><strong>Brand:</strong> {verificationResult.brand}</p>
+      <p><strong>Eco Score:</strong> {verificationResult.ecoScore}</p>
+      <p><strong>Labels:</strong> {verificationResult.labels}</p>
+      <p><strong>Packaging:</strong> {verificationResult.packaging}</p>
+      <p>
+        <strong>Eco-Friendly:</strong>{" "}
+        <span
+          className={`font-bold ${
+            verificationResult.isEcoFriendly ? "text-green-500" : "text-red-500"
+          }`}
+        >
+          {verificationResult.isEcoFriendly ? "Yes" : "No"}
+        </span>
+      </p>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };
