@@ -138,22 +138,7 @@ const VerifyProd = () => {
       </div>
 
       {/* QR Code Upload */}
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold">Upload QR Code:</h2>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setQrFile(e.target.files[0])}
-          className="w-full p-3 text-gray-900 rounded-lg"
-        />
-        <button
-          onClick={handleQrUpload}
-          disabled={loading || !qrFile}
-          className="mt-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-lg"
-        >
-          {loading ? "Processing..." : "Upload and Verify QR Code"}
-        </button>
-      </div>
+      
 
       {/* Search Results */}
       {/* Search Results */}
