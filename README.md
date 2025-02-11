@@ -2,7 +2,7 @@
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/isabelle36/ecolens.git
+   git clone https://github.com/Isabelle36/EcoLens.git
    ```
 2. Navigate to the project directory:
    ```bash
