@@ -3,9 +3,11 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getAirQuality, getWeather } from "../OpenWeather/apiService";
 import  {Navbar}  from "../Home b4 Login/Navbar"; 
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import './HomeAft.css';
 
 export const HomeAfterLogin = () => {
+  const navigate=useNavigate();
   const [userName, setUserName] = useState("");
   const [airQuality, setAirQuality] = useState(null);
   const [weather, setWeather] = useState(null);
@@ -13,6 +15,19 @@ export const HomeAfterLogin = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [vehicleMiles, setVehicleMiles] = useState("");
+  const [energyUsage, setEnergyUsage] = useState("");
+  const [userFootprint, setUserFootprint] = useState(null);
+
+  const calculateFootprint = () => {
+    // Example calculation (you can enhance this logic)
+    const vehicleEmissions = vehicleMiles * 0.411; // kg CO2 per mile
+    const energyEmissions = energyUsage * 0.233; // kg CO2 per kWh
+    const totalFootprint = vehicleEmissions + energyEmissions;
+
+    setUserFootprint(totalFootprint.toFixed(2));
+  };
   useEffect(() => {
    
     const auth = getAuth();
@@ -191,8 +206,8 @@ export const HomeAfterLogin = () => {
             Verify if the products you use are eco-friendly and sustainable with
             our AI-powered tools.
           </p>
-          <button className="bg-purple-700 text-white py-2 px-4 rounded-lg hover:bg-purple-600 transition">
-            Coming soon
+          <button className="bg-purple-700 text-white py-2 px-4 rounded-lg hover:bg-purple-600 transition" onClick={() => navigate("/verify-product")}>
+            Go verify
           </button>
         </div>
         {/* Card 3 */}
@@ -204,9 +219,59 @@ export const HomeAfterLogin = () => {
             Get detailed insights into carbon safety and avoid potential health
             risks with carbon.
           </p>
-          <button className="bg-purple-700 text-white py-2 px-4 rounded-lg hover:bg-purple-600 transition">
-           Coming soon
+          <button className="bg-purple-700 text-white py-2 px-4 rounded-lg hover:bg-purple-600 transition" onClick={() => setShowModal(true)}>
+           Calculate Now
           </button>
+          {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+            <h3 className="text-xl font-bold mb-4">Carbon Footprint Calculator</h3>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-medium mb-2">
+                Daily Vehicle Miles
+              </label>
+              <input
+                type="number"
+                value={vehicleMiles}
+                onChange={(e) => setVehicleMiles(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded-lg"
+                placeholder="Enter miles driven per day"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-medium mb-2">
+                Daily Energy Usage (kWh)
+              </label>
+              <input
+                type="number"
+                value={energyUsage}
+                onChange={(e) => setEnergyUsage(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded-lg"
+                placeholder="Enter energy usage in kWh"
+              />
+            </div>
+            <button
+              className="bg-purple-700 text-white py-2 px-4 rounded-lg hover:bg-purple-600 transition w-full"
+              onClick={calculateFootprint}
+            >
+              Calculate
+            </button>
+            {userFootprint && (
+              <div className="mt-4 text-center">
+                <p className="text-green-700 font-bold">
+                  Your Carbon Footprint: {userFootprint} kg CO2/day
+                </p>
+              </div>
+            )}
+            <button
+              className="mt-4 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-400 transition w-full"
+              onClick={() => setShowModal(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
         </div>
         {/* Card 4 */}
         <div className="p-6 bg-black bg-opacity-20 border border-white rounded-2xl shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300">
